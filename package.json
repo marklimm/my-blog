@@ -57,6 +57,8 @@
     "@sanity/block-content-to-react": "^3.0.0",
     "@sanity/client": "^2.15.0",
     "@sanity/image-url": "^0.140.22",
+    "@u-wave/react-vimeo": "^0.9.5",
+    "get-video-id": "^3.2.0",
     "groq": "^2.15.0",
     "next": "^11.1.0",
     "react": "^17.0.2",

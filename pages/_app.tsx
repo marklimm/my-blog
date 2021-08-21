@@ -15,7 +15,7 @@ const MyApp: FunctionComponent<AppProps> = ({
   return (
     <>
       <Head>
-        <title>Mark Limm</title>
+        <title>This blog right here</title>
       </Head>
       <div className=''>
         <Component {...pageProps} />
