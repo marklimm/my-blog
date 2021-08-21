@@ -28,11 +28,14 @@
     "@types/react": "^17.0.19",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
+    "autoprefixer": "^10.3.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-react": "^7.24.0",
+    "postcss": "^8.3.6",
     "prettier": "^2.3.2",
+    "tailwindcss": "^2.2.7",
     "typescript": "^4.3.5"
   },
   "dependencies": {
@@ -40,5 +43,12 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "sass": "^1.38.0"
+  },
+  "dependenciesComments": {
+    "next": "SSG react web framework",
+    "react": "javascript HTML rendering library",
+    "react-dom": "connect react to the HTML DOM",
+    "sass": "CSS extension"
   }
+
 }
