@@ -1,0 +1,11 @@
+body {
+  // color: #217463;
+  // background-color: #f0faf4;
+
+  @apply text-xl;
+
+  a {
+    @apply text-blue-500 hover:text-blue-800
+  }
+  
+}
