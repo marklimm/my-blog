@@ -5,6 +5,7 @@ import groq from 'groq'
 import BlockContent from '@sanity/block-content-to-react'
 
 import sanityClient from 'sanity/client'
+import CodeBlock from 'sanity/components/CodeBlock'
 import VimeoEmbed from 'sanity/components/VimeoEmbed'
 
 import { Image } from 'sanity/schemas/Image'
@@ -13,6 +14,7 @@ import { Body } from 'sanity/schemas/Body'
 
 const serializers = {
   types: {
+    code: CodeBlock,
     vimeo: VimeoEmbed,
   },
 }
