@@ -16,6 +16,7 @@ import { urlFor } from 'sanity/renderHelpers'
  */
 interface IndexPagePost {
   _id: string
+  previewText: string
   slug: {
     _type: string
     current: string
@@ -38,29 +39,38 @@ const HomePage: FunctionComponent<HomePageProps> = ({
         <meta name='description' content='This blog right here'></meta>
       </Head>
 
-      <div className=''>
-        <div className='m-3'>
-          <div className='mb-8'>
-            <span className='text-xl font-bold'>This is my blog!</span>
+      <div className='m-6'>
+        <div className='m-3 flex'>
+          <div className='flex-grow'>&nbsp;</div>
+          <div className='flex-none my-8 mr-16'>
+            <span className='text-5xl font-bold'>This blog right here</span>
           </div>
         </div>
-      </div>
 
-      {posts.map((post) => (
-        <div key={post._id} style={{ margin: '25px 0' }}>
-          <div style={{ display: 'inline-block' }}>
-            {post.thumbnail && (
-              <div>
-                <img src={urlFor(post.thumbnail).height(250).url()} />
+        {posts.map((post) => (
+          <div key={post._id} className='my-20'>
+            <div className='flex'>
+              {post.thumbnail && (
+                <div className='w-1/3 mr-10 '>
+                  <img
+                    className='object-cover w-full h-80'
+                    src={urlFor(post.thumbnail).height(300).url()}
+                  />
+                </div>
+              )}
+
+              <div className='w-1/2'>
+                <div className='mb-3'>
+                  <Link href={`/post/${post.slug.current}`}>
+                    <a target='_blank'>{post.title}</a>
+                  </Link>
+                </div>
+                {post.previewText}
               </div>
-            )}
+            </div>
           </div>
-
-          <Link href={`/post/${post.slug.current}`}>
-            <a target='_blank'>{post.title}</a>
-          </Link>
-        </div>
-      ))}
+        ))}
+      </div>
     </>
   )
 }
@@ -68,7 +78,7 @@ const HomePage: FunctionComponent<HomePageProps> = ({
 export const getStaticProps: GetStaticProps = async () => {
   //  get all posts except the dev blog post
   const groqQuery = groq`
-  *[_type == "post" && slug.current != 'dev-blog']{ _id, title, slug, "thumbnail": mainImage }
+  *[_type == "post" && slug.current != 'dev-blog'] | order(publishedAt desc) { _id, title, slug, "thumbnail": mainImage, previewText, publishedAt }
 `
 
   const posts = await sanityClient.fetch(groqQuery, {})
