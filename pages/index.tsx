@@ -9,7 +9,6 @@ import sanityClient from 'sanity/client'
 import VimeoEmbed from 'sanity/components/VimeoEmbed'
 
 import { Body } from 'sanity/schemas/Body'
-import { Tag } from 'sanity/schemas/Tag'
 
 import styles from './index.module.scss'
 
@@ -24,7 +23,7 @@ interface Screencast {
     _type: string
     current: string
   }
-  tags: Tag[]
+  tags: string[]
   title: string
   vimeoVideo: {
     url: string
