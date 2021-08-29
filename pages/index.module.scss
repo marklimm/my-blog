@@ -1,0 +1,31 @@
+
+
+$blue-dark: #4d6d9a;
+$blue-light: #86b3d1;
+$gray: #5f6366;
+$green: #99ced3;
+$pink: #edb5bf;
+
+// the title of the page
+.headerTitle {
+  color: $blue-light;
+  
+  @apply text-5xl font-bold
+}
+
+.screencastTitle {
+  color: $blue-dark;
+
+  @apply text-3xl
+}
+
+// an individual screencast tag
+.tag {
+  border-color: $green;
+  border-width: 3px;
+
+  //  I think with the font size I'm using I have to tweak the top and bottom padding to make it look centered
+  padding: 0.4px 10px 0.8px 10px;
+
+  @apply inline-block rounded-full my-2 text-lg
+}

@@ -11,7 +11,7 @@ import VimeoEmbed from 'sanity/components/VimeoEmbed'
 import { Body } from 'sanity/schemas/Body'
 import { Tag } from 'sanity/schemas/Tag'
 
-// import styles from './index.module.scss'
+import styles from './index.module.scss'
 
 /**
  * My typing of the sanity Screencast schema type.  I haven't looked into generating typescript types for sanity schemas yet
@@ -49,7 +49,7 @@ const HomePage: FunctionComponent<HomePageProps> = ({
         <div className='flex'>
           <div className='flex-grow'>&nbsp;</div>
           <div className='flex-none my-8 mr-16'>
-            <span className='text-5xl font-bold'>This blog right here</span>
+            <span className={styles.headerTitle}>This blog right here</span>
           </div>
         </div>
 
@@ -59,27 +59,24 @@ const HomePage: FunctionComponent<HomePageProps> = ({
               <VimeoEmbed url={screencast.vimeoVideo.url} />
 
               <div className='ml-5'>
-                <div className=' text-3xl'>{screencast.title}</div>
+                <div className={styles.screencastTitle}>{screencast.title}</div>
 
-                {screencast.tags.length > 0 && (
-                  <div>
-                    {screencast.tags.map((tag) => (
-                      <div
-                        key={tag}
-                        className='inline-block rounded-full my-3 py-0.5 px-3 border-2 border-green-700 text-base font-bold'
-                      >
-                        {tag}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className=''>
+                <div className='my-5'>
                   <BlockContent
                     blocks={screencast.blurb}
                     {...sanityClient.config()}
                   />
                 </div>
+
+                {screencast.tags.length > 0 && (
+                  <div>
+                    {screencast.tags.map((tag) => (
+                      <div key={tag} className={styles.tag}>
+                        {tag}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
