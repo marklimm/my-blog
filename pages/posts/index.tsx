@@ -61,7 +61,7 @@ const HomePage: FunctionComponent<HomePageProps> = ({
 
               <div className='w-1/2'>
                 <div className='mb-3'>
-                  <Link href={`/post/${post.slug.current}`}>
+                  <Link href={`/posts/${post.slug.current}`}>
                     <a target='_blank'>{post.title}</a>
                   </Link>
                 </div>
