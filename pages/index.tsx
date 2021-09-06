@@ -44,7 +44,7 @@ const HomePage: FunctionComponent<HomePageProps> = ({
         <meta name='description' content='This blog right here'></meta>
       </Head>
 
-      <div className='m-8'>
+      <div className='m-4'>
         <div className='flex'>
           <div className='flex-grow'>&nbsp;</div>
           <div className='flex-none my-8 mr-16'>
@@ -53,11 +53,14 @@ const HomePage: FunctionComponent<HomePageProps> = ({
         </div>
 
         {screencasts.map((screencast) => (
-          <div key={screencast._id} className=' my-28'>
-            <div className='flex'>
-              <VimeoEmbed url={screencast.vimeoVideo.url} />
+          <div key={screencast._id} className='my-32'>
+            {/* right now my vimeo image width is fairly large, so I just have the video above the description for all the smaller sizes, and then only at 2xl I use flexbox */}
+            <div className='2xl:flex'>
+              <div className=''>
+                <VimeoEmbed url={screencast.vimeoVideo.url} />
+              </div>
 
-              <div className='ml-5'>
+              <div className='w-full lg:w-8/12 2xl:pl-16 2xl:w-5/12'>
                 <div className={styles.screencastTitle}>{screencast.title}</div>
 
                 <div className='my-5'>
