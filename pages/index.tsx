@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
+import Image from 'next/image'
 
 import groq from 'groq'
 
@@ -10,7 +12,7 @@ import VimeoEmbed from 'sanity/components/VimeoEmbed'
 
 import { urlFor } from 'sanity/renderHelpers'
 import { Body } from 'sanity/schemas/Body'
-import { Image } from 'sanity/schemas/Image'
+import { ImageSanity } from 'sanity/schemas/Image'
 
 import styles from './index.module.scss'
 
@@ -20,8 +22,10 @@ import styles from './index.module.scss'
 interface Project {
   _id: string
   blurb: Body
-
-  mainImage: Image
+  githubUrl: {
+    url: string
+  }
+  mainImage: ImageSanity
   order: string
   title: string
   url: {
@@ -107,38 +111,56 @@ const HomePage: FunctionComponent<HomePageProps> = ({
         <div className='flex justify-center'>
           {/* flex-col to have the items render vertically */}
           <div className='flex flex-col xl:w-3/4'>
-            {projects.map((project) => (
-              <div key={project._id} className='my-12 '>
-                <div className='flex'>
-                  {project.mainImage && (
-                    <img
-                      style={{ width: '500px', height: '500px' }}
-                      className='object-cover'
-                      src={urlFor(project.mainImage).height(500).url()}
-                    />
-                  )}
+            {projects.map((project) => {
+              //  doing this so that an error doesn't occur when trying to display the project mainImage.  Solution was found at https://stackoverflow.com/a/68042478
+              const src = urlFor(project.mainImage).url()
 
-                  <div className='pl-8'>
-                    <div className={styles.screencastTitle}>
-                      <a
-                        href={`${project.url}`}
-                        target='_blank'
-                        rel='noreferrer'
-                      >
-                        {project.title}
-                      </a>
-                    </div>
+              return (
+                <div key={project._id} className='my-12 '>
+                  <div className='flex'>
+                    {project.mainImage && (
+                      <Link href={project.url}>
+                        <a target='_blank'>
+                          <Image
+                            loader={() => src}
+                            src={src}
+                            alt={`${project.title}`}
+                            width='500'
+                            height='500'
+                            layout='fixed'
+                            objectFit='cover'
+                          />
+                        </a>
+                      </Link>
+                    )}
 
-                    <div className='block-content my-5'>
-                      <BlockContent
-                        blocks={project.blurb}
-                        {...sanityClient.config()}
-                      />
+                    <div className='pl-8'>
+                      <div className={styles.screencastTitle}>
+                        <a
+                          href={`${project.url}`}
+                          target='_blank'
+                          rel='noreferrer'
+                        >
+                          {project.title}
+                        </a>
+                      </div>
+                      <div className='text-base mt-3'>
+                        Github: &nbsp;
+                        <Link href={project.githubUrl}>
+                          <a target='_blank'>{project.githubUrl}</a>
+                        </Link>
+                      </div>
+                      <div className='block-content my-5'>
+                        <BlockContent
+                          blocks={project.blurb}
+                          {...sanityClient.config()}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>
@@ -154,7 +176,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   //  the groq query to retrieve projects
   const projectsQuery = groq`
-  *[_type == "project"] | order(order) { _id, blurb, mainImage, order, title, url }
+  *[_type == "project"] | order(order) { _id, blurb, githubUrl, mainImage, order, title, url }
 `
 
   const screencasts = await sanityClient.fetch(screencastsQuery, {})
