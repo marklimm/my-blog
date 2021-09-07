@@ -10,6 +10,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended', //  typescript recommended eslint rules
     'plugin:prettier/recommended', //  disables rules that interfere with prettier (with eslint-config-prettier) and adds the prettier rules.  See https://github.com/prettier/eslint-plugin-prettier#recommended-configuration for reference
   ],
+  ignorePatterns: ['pages/posts/*'],
   parser: '@typescript-eslint/parser', //  tells eslint how to parse typescript files
   parserOptions: {
     ecmaFeatures: {

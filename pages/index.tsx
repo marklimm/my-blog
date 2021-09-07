@@ -8,9 +8,26 @@ import BlockContent from '@sanity/block-content-to-react'
 import sanityClient from 'sanity/client'
 import VimeoEmbed from 'sanity/components/VimeoEmbed'
 
+import { urlFor } from 'sanity/renderHelpers'
 import { Body } from 'sanity/schemas/Body'
+import { Image } from 'sanity/schemas/Image'
 
 import styles from './index.module.scss'
+
+/**
+ * My typing of the sanity Project schema type.  I haven't looked into generating typescript types for sanity schemas yet
+ */
+interface Project {
+  _id: string
+  blurb: Body
+
+  mainImage: Image
+  order: string
+  title: string
+  url: {
+    url: string
+  }
+}
 
 /**
  * My typing of the sanity Screencast schema type.  I haven't looked into generating typescript types for sanity schemas yet
@@ -31,10 +48,12 @@ interface Screencast {
 }
 
 interface HomePageProps {
+  projects: Project[]
   screencasts: Screencast[]
 }
 
 const HomePage: FunctionComponent<HomePageProps> = ({
+  projects,
   screencasts,
 }: HomePageProps) => {
   return (
@@ -63,7 +82,7 @@ const HomePage: FunctionComponent<HomePageProps> = ({
               <div className='w-full lg:w-8/12 2xl:pl-16 2xl:w-5/12'>
                 <div className={styles.screencastTitle}>{screencast.title}</div>
 
-                <div className='my-5'>
+                <div className='block-content my-5'>
                   <BlockContent
                     blocks={screencast.blurb}
                     {...sanityClient.config()}
@@ -83,23 +102,67 @@ const HomePage: FunctionComponent<HomePageProps> = ({
             </div>
           </div>
         ))}
+
+        {/* justify-center centers the child div horizontally */}
+        <div className='flex justify-center'>
+          {/* flex-col to have the items render vertically */}
+          <div className='flex flex-col xl:w-3/4'>
+            {projects.map((project) => (
+              <div key={project._id} className='my-12 '>
+                <div className='flex'>
+                  {project.mainImage && (
+                    <img
+                      style={{ width: '500px', height: '500px' }}
+                      className='object-cover'
+                      src={urlFor(project.mainImage).height(500).url()}
+                    />
+                  )}
+
+                  <div className='pl-8'>
+                    <div className={styles.screencastTitle}>
+                      <a
+                        href={`${project.url}`}
+                        target='_blank'
+                        rel='noreferrer'
+                      >
+                        {project.title}
+                      </a>
+                    </div>
+
+                    <div className='block-content my-5'>
+                      <BlockContent
+                        blocks={project.blurb}
+                        {...sanityClient.config()}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  //  get all the screencasts
-  const groqQuery = groq`
+  //  the groq query to retrieve screencasts
+  const screencastsQuery = groq`
   *[_type == "screencast"] | order(publishedAt desc) { _id, blurb, publishedAt, slug, "tags": tags[]->title, title, vimeoVideo }
 `
 
-  const screencasts = await sanityClient.fetch(groqQuery, {})
+  //  the groq query to retrieve projects
+  const projectsQuery = groq`
+  *[_type == "project"] | order(order) { _id, blurb, mainImage, order, title, url }
+`
 
-  console.log('screencasts', screencasts)
+  const screencasts = await sanityClient.fetch(screencastsQuery, {})
+  const projects = await sanityClient.fetch(projectsQuery, {})
 
   return {
     props: {
+      projects,
       screencasts,
     },
   }
