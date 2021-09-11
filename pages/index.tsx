@@ -67,7 +67,7 @@ const HomePage: FunctionComponent<HomePageProps> = ({
         <meta name='description' content='This blog right here'></meta>
       </Head>
 
-      <div className='m-4'>
+      <div className='m-6'>
         <div className='flex'>
           <div className='flex-grow'>&nbsp;</div>
           <div className='flex-none my-8 mr-16'>
@@ -112,8 +112,9 @@ const HomePage: FunctionComponent<HomePageProps> = ({
           {/* flex-col to have the items render vertically */}
           <div className='flex flex-col xl:w-3/4'>
             {projects.map((project) => {
-              //  doing this so that an error doesn't occur when trying to display the project mainImage.  Solution was found at https://stackoverflow.com/a/68042478
-              const src = urlFor(project.mainImage).url()
+              const sanityImageUrlLoader = ({ width }) => {
+                return `${urlFor(project.mainImage).width(width).url()}`
+              }
 
               return (
                 <div key={project._id} className='my-12 '>
@@ -122,8 +123,8 @@ const HomePage: FunctionComponent<HomePageProps> = ({
                       <Link href={project.url}>
                         <a target='_blank'>
                           <Image
-                            loader={() => src}
-                            src={src}
+                            loader={sanityImageUrlLoader}
+                            src='this-doesnt-matter.png'
                             alt={`${project.title}`}
                             width='500'
                             height='500'
