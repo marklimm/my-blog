@@ -22,15 +22,11 @@ import styles from './index.module.scss'
 interface Project {
   _id: string
   blurb: Body
-  githubUrl: {
-    url: string
-  }
+  githubUrl: string
   mainImage: ImageSanity
   order: string
   title: string
-  url: {
-    url: string
-  }
+  url: string
 }
 
 /**
