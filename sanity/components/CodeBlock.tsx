@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 //  I did not have luck trying to specify different code styles - https://www.npmjs.com/package/react-syntax-highlighter
 // import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs'
@@ -11,9 +11,7 @@ interface CodeBlockProps {
   }
 }
 
-const CodeBlock: FunctionComponent<CodeBlockProps> = ({
-  node,
-}: CodeBlockProps) => {
+const CodeBlock = ({ node }: CodeBlockProps): JSX.Element => {
   if (!node || !node.code) {
     return null
   }

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -52,10 +52,7 @@ interface HomePageProps {
   screencasts: Screencast[]
 }
 
-const HomePage: FunctionComponent<HomePageProps> = ({
-  projects,
-  screencasts,
-}: HomePageProps) => {
+const HomePage = ({ projects, screencasts }: HomePageProps): JSX.Element => {
   return (
     <>
       <Head>
